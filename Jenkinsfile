@@ -1,10 +1,14 @@
-/* Requires the Docker Pipeline plugin */
 pipeline {
-    agent { docker { image 'python:3.14.2-alpine3.23' } }
+    agent any
+
     stages {
-        stage('build') {
+        stage('Run Python') {
             steps {
-                sh 'python --version'
+                script {
+                    docker.image('python:3.14.2-alpine3.23').inside('--workdir /workspace') {
+                        sh 'python --version'
+                    }
+                }
             }
         }
     }
